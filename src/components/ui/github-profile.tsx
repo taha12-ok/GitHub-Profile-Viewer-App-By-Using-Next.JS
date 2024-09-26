@@ -77,9 +77,14 @@ export default function GitHubProfileViewer() {
       const reposData = await reposResponse.json();
       setUserProfile(profileData); // Set user profile state with fetched data
       setUserRepos(reposData); // Set user repositories state with fetched data
-    } catch (error: any) {
-      setError(error.message); // Set error state with the error message
-    } finally {
+    } catch (error: unknown) {
+  if (error instanceof Error) {
+    setError(error.message); // Safely access the error message
+  } else {
+    setError("An unexpected error occurred");
+  }
+}
+ finally {
       setLoading(false); // Set loading to false after fetching data
     }
   };
